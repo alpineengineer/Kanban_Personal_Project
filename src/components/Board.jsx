@@ -20,23 +20,22 @@ const Board = () => {
         }
     ]
 
+
     return (
         <>
             <h1>My Kanban Board</h1>
             <Column
                 title={"To Do"}
-                taskTitle={tasks[0].title}
-                taskDescription={tasks[0].description}
+                tasks={tasks}
             />
             <Column
                 title={"In Progress"}
-                taskTitle={tasks[1].title}
-                taskDescription={tasks[1].description}
+                tasks={tasks}
             />
             <Column
                 title={"Done"}
-                taskTitle={tasks[2].title}
-                taskDescription={tasks[2].description}
+                tasks={tasks}
+
             />
         </>
     )
