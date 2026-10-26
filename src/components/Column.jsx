@@ -9,6 +9,7 @@ const Column = ({title, tasks}) => {
             <h2>{title}</h2>
             {tasks.map(task => (
                 <TaskCard
+                    key={task.id}
                     title={task.title}
                     description={task.description}
                 />)
