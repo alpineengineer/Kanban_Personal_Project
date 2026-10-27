@@ -1,9 +1,10 @@
 import Column from "./Column.jsx";
 import {useState} from "react";
+import TaskForm from "./TaskForm.jsx";
 
 const Board = () => {
 
-    const [tasks, setTasks] = useState( [
+    const [tasks, setTasks] = useState([
         {
             id: 1,
             title: "Create task form",
@@ -24,12 +25,21 @@ const Board = () => {
         }
     ])
 
-    const addTask = () => {
+    const addTask = (taskData) => {
+        const taskIds =
+            tasks.map(task => task.id)
+        const nextId =
+            taskIds.length > 0
+                ? Math.max(...taskIds) + 1 : 1;
+        console.log("New task ID:", nextId);
+
         const newTask = {
-            id: 4,
-            title: "Test new Task",
-            description: "Added using React state",
-            status: "To Do"
+            id: nextId,
+            title: taskData.title,
+            description: taskData.description,
+            priority: taskData.priority,
+            status: taskData.status,
+
         }
         setTasks([...tasks, newTask]);
     }
@@ -38,7 +48,6 @@ const Board = () => {
         <>
             <h1>My Kanban Board</h1>
             <Column
-
                 title={"To Do"}
                 tasks={tasks.filter(task => task.status === "To Do")}
             />
@@ -49,11 +58,13 @@ const Board = () => {
             <Column
                 title={"Done"}
                 tasks={tasks.filter(task => task.status === "Done")}
-
             />
-            <button onClick={addTask}>Add Task</button>
+            <br/>
+            <TaskForm onAddTask={addTask} />
         </>
+
     )
+
 }
 
 export default Board;
