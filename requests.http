@@ -1,0 +1,25 @@
+POST http://localhost:8080/api/boards
+Content-Type: application/json
+
+{
+  "name": "second board"
+}
+
+###
+GET http://localhost:8080/api/boards/9999
+
+### update board
+PUT http://localhost:8080/api/boards/1
+Content-Type: application/json
+
+{
+  "name": "Updated Kanban Board"
+}
+
+### delete board
+DELETE http://localhost:8080/api/boards/3
+
+###
+
+
+
