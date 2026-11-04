@@ -1,8 +1,21 @@
 import Column from "./Column.jsx";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import TaskForm from "./TaskForm.jsx";
+import {getTasks, createTask, getColumns} from "../api/taskApi.js";
 
 const Board = () => {
+
+    useEffect(() => {
+        getTasks().then(data => {
+            setTasks(data);
+        })
+        getColumns().then(data => {
+            console.log("columns received from API: ",data);
+            setColumns(data);
+        });
+    }, []);
+
+    const [columns, setColumns] = useState([]);
 
     const [tasks, setTasks] = useState([
         {
@@ -26,22 +39,27 @@ const Board = () => {
     ])
 
     const addTask = (taskData) => {
-        const taskIds =
-            tasks.map(task => task.id)
-        const nextId =
-            taskIds.length > 0
-                ? Math.max(...taskIds) + 1 : 1;
-        console.log("New task ID:", nextId);
+        console.log("available columns: ",columns);
+        console.log("selected status: ", taskData.status);
+        const selectedColumn =
+            columns.find(column => column.name === taskData.status);
+        if (!selectedColumn) {
+            alert("Column not found")
+            return;
+        }
 
         const newTask = {
-            id: nextId,
             title: taskData.title,
             description: taskData.description,
             priority: taskData.priority,
-            status: taskData.status,
-
+            column:
+                {
+                    id: selectedColumn.id
+                }
         }
-        setTasks([...tasks, newTask]);
+        createTask(newTask).then(data => {
+            console.log(data);
+        })
     }
 
     return (
@@ -49,21 +67,22 @@ const Board = () => {
             <h1>My Kanban Board</h1>
             <Column
                 title={"To Do"}
-                tasks={tasks.filter(task => task.status === "To Do")}
+                tasks={tasks.filter(task => task.column?.name === "To Do")}
             />
             <Column
                 title={"In Progress"}
-                tasks={tasks.filter(task => task.status === "In Progress")}
+                tasks={tasks.filter(task => task.column?.name === "In Progress")}
             />
             <Column
                 title={"Done"}
-                tasks={tasks.filter(task => task.status === "Done")}
+                tasks={tasks.filter(task => task.column?.name === "Done")}
             />
             <br/>
-            <TaskForm onAddTask={addTask} />
+            <TaskForm onAddTask={addTask}/>
         </>
 
     )
+
 
 }
 

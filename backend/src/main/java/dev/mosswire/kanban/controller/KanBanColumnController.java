@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/columns")
-
+@CrossOrigin(origins = "http://localhost:5173")
 public class KanBanColumnController {
     private final KanBanColumnRepository repository;
     private final BoardRepository boardRepository;

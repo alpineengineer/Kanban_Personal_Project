@@ -81,6 +81,24 @@ Content-Type: application/json
 }
 ### Delete task
 DELETE http://localhost:8080/api/tasks/1
+###
+POST http://localhost:8080/api/columns
+Content-Type: application/json
 
+{
+  "name": "In Progress",
+  "board": {
+    "id": 1
+  }
+}
+###
+POST http://localhost:8080/api/columns
+Content-Type: application/json
 
+{
+  "name": "Done",
+  "board": {
+    "id": 1
+  }
+}
 
