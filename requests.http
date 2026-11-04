@@ -19,7 +19,68 @@ Content-Type: application/json
 ### delete board
 DELETE http://localhost:8080/api/boards/3
 
-###
+
+### Create Kanban column
+POST http://localhost:8080/api/columns
+Content-Type: application/json
+
+{
+  "name": "To Do",
+  "board": {
+    "id": 1
+  }
+}
+
+### Existing board
+GET http://localhost:8080/api/columns/search?boardId=1
+
+### Nonexistent board
+GET http://localhost:8080/api/columns/search?boardId=9999
+
+### Update Kanban column
+PUT http://localhost:8080/api/columns/1
+Content-Type: application/json
+
+{
+  "name": "Backlog"
+}
+
+### Delete Kanban column
+DELETE http://localhost:8080/api/columns/3
+
+### Get all tasks
+GET http://localhost:8080/api/tasks
+
+### Create task
+POST http://localhost:8080/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Build Task API",
+  "description": "Connect React to Spring Boot",
+  "priority": "High",
+  "column": {
+    "id": 4
+  }
+}
+
+### Get existing task
+GET http://localhost:8080/api/tasks/1
+
+### Get nonexistent task
+GET http://localhost:8080/api/tasks/9999
+
+### Update task
+PUT http://localhost:8080/api/tasks/2
+Content-Type: application/json
+
+{
+  "title": "Updated Task Title",
+  "description": "Testing the PUT endpoint",
+  "priority": "Medium"
+}
+### Delete task
+DELETE http://localhost:8080/api/tasks/1
 
 
 

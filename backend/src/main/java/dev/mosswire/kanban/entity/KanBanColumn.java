@@ -5,10 +5,13 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "columns")
 
+
 public class KanBanColumn {
 
-    public KanBanColumn(String name) {
+    public KanBanColumn(String name, Board board) {
         this.name = name;
+        this.board = board;
+
     }
 
     public Long getId() {
@@ -38,4 +41,15 @@ public class KanBanColumn {
     private Long id;
     @Column(name = "name", nullable = false, length = 100)
     private String name;
+    @ManyToOne
+    @JoinColumn(name = "board_id", nullable = false)
+    private Board board;
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
 }
