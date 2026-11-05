@@ -1,7 +1,8 @@
 import Column from "./Column.jsx";
 import {useState, useEffect} from "react";
 import TaskForm from "./TaskForm.jsx";
-import {getTasks, createTask, getColumns} from "../api/taskApi.js";
+import {getTasks, createTask, getColumns, deleteTask, updateTask} from "../api/taskApi.js";
+import EditTaskForm from "./EditTaskForm.jsx";
 
 const Board = () => {
 
@@ -10,37 +11,19 @@ const Board = () => {
             setTasks(data);
         })
         getColumns().then(data => {
-            console.log("columns received from API: ",data);
             setColumns(data);
         });
+
     }, []);
+
 
     const [columns, setColumns] = useState([]);
 
-    const [tasks, setTasks] = useState([
-        {
-            id: 1,
-            title: "Create task form",
-            description: "Build a form for adding new tasks",
-            status: "To Do"
-        },
-        {
-            id: 2,
-            title: "Build Kanban layout",
-            description: "Create the board layout",
-            status: "In Progress",
-        },
-        {
-            id: 3,
-            title: "Set up a database",
-            description: "Configure PostgreSQL",
-            status: "Done"
-        }
-    ])
+    const [editingTask, setEditingTask] = useState(null);
+
+    const [tasks, setTasks] = useState([])
 
     const addTask = (taskData) => {
-        console.log("available columns: ",columns);
-        console.log("selected status: ", taskData.status);
         const selectedColumn =
             columns.find(column => column.name === taskData.status);
         if (!selectedColumn) {
@@ -58,9 +41,28 @@ const Board = () => {
                 }
         }
         createTask(newTask).then(data => {
-            console.log(data);
+            setTasks(previousTasks => [...previousTasks, data]);
         })
     }
+    const handleDeleteTask = (taskId) => {
+        deleteTask(taskId).then(() => {
+            setTasks(previousTasks => previousTasks.filter(task => task.id !== taskId));
+        })
+    }
+    const handleUpdateTask = (taskId) => {
+        const selectedTask = tasks.find(task => task.id === taskId);
+        setEditingTask(selectedTask);
+    }
+
+    const handleSaveTask = (taskId, updatedTaskData) => {
+        updateTask(taskId, updatedTaskData).then(data => {
+            setTasks(previousTasks => previousTasks.map(task => task.id === taskId
+                ? data
+                : task))
+            setEditingTask(null);
+        });
+    }
+
 
     return (
         <>
@@ -68,17 +70,24 @@ const Board = () => {
             <Column
                 title={"To Do"}
                 tasks={tasks.filter(task => task.column?.name === "To Do")}
+                onDeleteTask={handleDeleteTask}
+                onUpdateTask={handleUpdateTask}
             />
             <Column
                 title={"In Progress"}
                 tasks={tasks.filter(task => task.column?.name === "In Progress")}
+                onDeleteTask={handleDeleteTask}
+                onUpdateTask={handleUpdateTask}
             />
             <Column
                 title={"Done"}
                 tasks={tasks.filter(task => task.column?.name === "Done")}
+                onDeleteTask={handleDeleteTask}
+                onUpdateTask={handleUpdateTask}
             />
             <br/>
             <TaskForm onAddTask={addTask}/>
+            {editingTask && <EditTaskForm task={editingTask} onSaveTask={handleSaveTask}/>}
         </>
 
     )

@@ -1,7 +1,7 @@
 import TaskCard from "./TaskCard.jsx";
 
 
-const Column = ({title, tasks}) => {
+const Column = ({title, tasks, onDeleteTask, onUpdateTask}) => {
 
 
     return (
@@ -12,6 +12,9 @@ const Column = ({title, tasks}) => {
                     key={task.id}
                     title={task.title}
                     description={task.description}
+                    onDeleteTask={onDeleteTask}
+                    onUpdateTask={onUpdateTask}
+                    id={task.id}
                 />)
             )}
         </>
