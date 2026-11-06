@@ -5,12 +5,14 @@ const EditTaskForm = ({task, onSaveTask}) => {
     const [title, setTitle] = useState(task.title);
     const [description, setDescription] = useState(task.description ?? "");
     const [priority, setPriority] = useState(task.priority);
+    const [status, setStatus] = useState(task.column.name)
     const handleSubmit = (e) => {
         e.preventDefault();
         const updatedTaskData = {
             title,
             description,
-            priority
+            priority,
+            status
         }
         onSaveTask(task.id, updatedTaskData);
     }
@@ -38,6 +40,16 @@ const EditTaskForm = ({task, onSaveTask}) => {
                 <option value="Low">Low</option>
                 <option value="Medium">Medium</option>
                 <option value="High">High</option>
+            </select>
+
+            <label htmlFor="editStatus">Status</label>
+            <select
+                id="editStatus"
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}>
+                <option value="To Do">To Do</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Done">Done</option>
             </select>
 
             <button type="submit">Save Changes</button>
