@@ -3,18 +3,28 @@ import {useState, useEffect} from "react";
 import TaskForm from "./TaskForm.jsx";
 import {getTasks, createTask, getColumns, deleteTask, updateTask, getTaskDetails} from "../api/taskApi.js";
 import EditTaskForm from "./EditTaskForm.jsx";
+import {Container, Row, Col} from "react-bootstrap";
 
 const Board = () => {
 
     useEffect(() => {
         getTasks().then(data => {
             setTasks(data);
+        }).catch(error => {
+            console.error(error);
+            alert("Failed to load tasks");
         })
         getColumns().then(data => {
             setColumns(data);
-        });
+        }).catch(error => {
+            console.error(error);
+            alert("Failed to load columns");
+        })
         getTaskDetails().then(data => {
             setTaskDetails(data);
+        }).catch(error => {
+            console.error(error);
+            alert("Failed to load task details");
         })
 
     }, []);
@@ -53,6 +63,9 @@ const Board = () => {
             getTaskDetails().then(data => {
                 setTaskDetails(data);
             })
+        }).catch(error => {
+            console.error(error);
+            alert("Failed to create task");
         })
     }
     const handleDeleteTask = (taskId) => {
@@ -61,14 +74,15 @@ const Board = () => {
             getTaskDetails().then(data => {
                 setTaskDetails(data);
             })
+        }).catch(error => {
+            console.error(error);
+            alert("Failed to delete task");
         })
     }
     const handleUpdateTask = (taskId) => {
         const selectedTask = tasks.find(task => task.id === taskId);
         setEditingTask(selectedTask);
-
     }
-
 
     const handleSaveTask = (taskId, updatedTaskData) => {
         const selectedColumn = columns.find(column => column.name === updatedTaskData.status);
@@ -90,13 +104,22 @@ const Board = () => {
             getTaskDetails().then(data => {
                 setTaskDetails(data);
             })
-        });
+        }).catch(error => {
+            console.error(error);
+            alert("Failed to update task");
+        })
     }
+
+    const handleCancelEdit = () => {
+        setEditingTask(null);
+    }
+
     const filteredTasks = tasks.filter(task => task.title.toLowerCase().includes(searchTerm.toLowerCase()));
 
 
     return (
-        <>
+        <Container>
+
             <h1>My Kanban Board</h1>
             <label
                 htmlFor="taskSearch"
@@ -108,24 +131,36 @@ const Board = () => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <Column
-                title={"To Do"}
-                tasks={filteredTasks.filter(task => task.column?.name === "To Do")}
-                onDeleteTask={handleDeleteTask}
-                onUpdateTask={handleUpdateTask}
-            />
-            <Column
-                title={"In Progress"}
-                tasks={filteredTasks.filter(task => task.column?.name === "In Progress")}
-                onDeleteTask={handleDeleteTask}
-                onUpdateTask={handleUpdateTask}
-            />
-            <Column
-                title={"Done"}
-                tasks={filteredTasks.filter(task => task.column?.name === "Done")}
-                onDeleteTask={handleDeleteTask}
-                onUpdateTask={handleUpdateTask}
-            />
+            <Row
+                className="g-3"
+            >
+                <Col xs={12} md={4}>
+                    <Column
+                        title={"To Do"}
+                        tasks={filteredTasks.filter(task => task.column?.name === "To Do")}
+                        onDeleteTask={handleDeleteTask}
+                        onUpdateTask={handleUpdateTask}
+                    />
+                </Col>
+                <Col xs={12} md={4}>
+                    <Column
+                        title={"In Progress"}
+                        tasks={filteredTasks.filter(task => task.column?.name === "In Progress")}
+                        onDeleteTask={handleDeleteTask}
+                        onUpdateTask={handleUpdateTask}
+                    />
+                </Col>
+
+                <Col xs={12} md={4}>
+                    <Column
+                        title={"Done"}
+                        tasks={filteredTasks.filter(task => task.column?.name === "Done")}
+                        onDeleteTask={handleDeleteTask}
+                        onUpdateTask={handleUpdateTask}
+                    />
+                </Col>
+
+            </Row>
             <table>
                 <thead>
                 <tr>
@@ -147,12 +182,11 @@ const Board = () => {
             </table>
             <br/>
             <TaskForm onAddTask={addTask}/>
-            {editingTask && <EditTaskForm task={editingTask} onSaveTask={handleSaveTask}/>}
-        </>
+            {editingTask && <EditTaskForm task={editingTask} onSaveTask={handleSaveTask} onCancel={handleCancelEdit}/>}
+        </Container>
 
     )
-
-
 }
+
 
 export default Board;

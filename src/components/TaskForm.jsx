@@ -1,96 +1,134 @@
-import {useState} from "react";
 
+import { useState } from "react";
+import { Form, Button, Card, Row, Col } from "react-bootstrap";
 
-const TaskForm = ({onAddTask}) => {
+const TaskForm = ({ onAddTask }) => {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [priority, setPriority] = useState("Medium");
     const [status, setStatus] = useState("To Do");
+    const [titleError, setTitleError] = useState("");
+
     const handleSubmit = (e) => {
-        e.preventDefault()
-        //input validation for an empty title
+        e.preventDefault();
+
         if (title.trim() === "") {
-            alert("Task title is required");
+            setTitleError("Task title is required");
             return;
         }
-        const newTaskData={
-            title: title,
-            description: description,
-            priority: priority,
-            status: status,
-        }
+
+        setTitleError("");
+
+        const newTaskData = {
+            title: title.trim(),
+            description,
+            priority,
+            status
+        };
+
         onAddTask(newTaskData);
-        //restores default values after form submission
+
+        // Restore default form values
         setTitle("");
         setDescription("");
         setPriority("Medium");
         setStatus("To Do");
-    }
-
+    };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <Card className="mt-4 mb-4 shadow-sm">
+            <Card.Body className="p-4">
+                <Card.Title className="mb-4">
+                    Create New Task
+                </Card.Title>
 
-            <label htmlFor="title">Task Title </label>
-            <input
-                id="title"
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-            />
+                <Form onSubmit={handleSubmit}>
 
-            <label htmlFor="description">Description</label>
-            <input
-                id="description"
-                type="text"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-            />
+                    {/* Task title */}
+                    <Form.Group className="mb-3" controlId="taskTitle">
+                        <Form.Label>Task Title</Form.Label>
+                        <Form.Control
+                            type="text"
+                            placeholder="Enter task title"
+                            value={title}
+                            isInvalid={Boolean(titleError)}
+                            onChange={(e) => {
+                                setTitle(e.target.value);
+                                setTitleError("");
+                            }}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                            {titleError}
+                        </Form.Control.Feedback>
+                    </Form.Group>
 
-            <label htmlFor="low">Low</label>
-            <input
-                id="low"
-                type="radio"
-                name="priority"
-                value="Low"
-                checked={priority === "Low"}
-                onChange={(e) => setPriority(e.target.value)}
-            />
+                    {/* Description */}
+                    <Form.Group className="mb-3" controlId="taskDescription">
+                        <Form.Label>Description</Form.Label>
+                        <Form.Control
+                            as="textarea"
+                            rows={3}
+                            placeholder="Describe the task..."
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                        />
+                    </Form.Group>
 
-            <label htmlFor="medium">Medium</label>
-            <input
-                id="medium"
-                type="radio"
-                name="priority"
-                value="Medium"
-                checked={priority === "Medium"}
-                onChange={(e) => setPriority(e.target.value)}
-            />
+                    <Row className="mb-4">
+                        {/* Priority radio buttons */}
+                        <Col xs={12} md={6} className="mb-3 mb-md-0">
+                            <fieldset>
+                                <legend className="fs-6 mb-2">
+                                    Priority
+                                </legend>
 
-            <label htmlFor="high">High</label>
-            <input
-                id="high"
-                type="radio"
-                name="priority"
-                value="High"
-                checked={priority === "High"}
-                onChange={(e) => setPriority(e.target.value)}
-            />
+                                {["Low", "Medium", "High"].map((level) => (
+                                    <Form.Check
+                                        key={level}
+                                        type="radio"
+                                        id={`priority-${level.toLowerCase()}`}
+                                        name="priority"
+                                        label={level}
+                                        value={level}
+                                        checked={priority === level}
+                                        onChange={(e) =>
+                                            setPriority(e.target.value)
+                                        }
+                                    />
+                                ))}
+                            </fieldset>
+                        </Col>
 
-            <label htmlFor="taskStatus">Task Status</label>
-            <select
-                id="taskStatus"
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
-            >
-                <option value="To Do">To Do</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Done">Done</option>
-            </select>
+                        {/* Task status */}
+                        <Col xs={12} md={6}>
+                            <Form.Group controlId="taskStatus">
+                                <Form.Label>Status</Form.Label>
+                                <Form.Select
+                                    value={status}
+                                    onChange={(e) =>
+                                        setStatus(e.target.value)
+                                    }
+                                >
+                                    <option value="To Do">To Do</option>
+                                    <option value="In Progress">
+                                        In Progress
+                                    </option>
+                                    <option value="Done">Done</option>
+                                </Form.Select>
+                            </Form.Group>
+                        </Col>
+                    </Row>
 
-            <button type="submit">Submit</button>
-        </form>
+                    <div className="d-grid d-sm-flex justify-content-sm-end">
+                        <Button variant="primary" type="submit">
+                            Create Task
+                        </Button>
+                    </div>
+
+                </Form>
+            </Card.Body>
+        </Card>
     );
-
 };
+
 export default TaskForm;
