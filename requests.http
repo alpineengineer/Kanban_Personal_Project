@@ -65,22 +65,25 @@ Content-Type: application/json
 }
 
 ### Get existing task
-GET http://localhost:8080/api/tasks/1
+GET http://localhost:8080/api/tasks/23
 
 ### Get nonexistent task
 GET http://localhost:8080/api/tasks/9999
 
 ### Update task
-PUT http://localhost:8080/api/tasks/2
+PUT http://localhost:8080/api/tasks/23
 Content-Type: application/json
 
 {
-  "title": "Updated Task Title",
+  "title": "Complete API Documentation",
   "description": "Testing the PUT endpoint",
-  "priority": "Medium"
+  "priority": "High",
+  "column": {
+    "id": 6
+  }
 }
 ### Delete task
-DELETE http://localhost:8080/api/tasks/1
+DELETE http://localhost:8080/api/tasks/23
 ###
 POST http://localhost:8080/api/columns
 Content-Type: application/json
