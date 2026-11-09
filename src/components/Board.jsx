@@ -1,9 +1,9 @@
 import Column from "./Column.jsx";
 import {useState, useEffect} from "react";
 import TaskForm from "./TaskForm.jsx";
-import {getTasks, createTask, getColumns, deleteTask, updateTask, getTaskDetails} from "../api/taskApi.js";
+import {getTasks, createTask, getColumns, deleteTask, updateTask} from "../api/taskApi.js";
 import EditTaskForm from "./EditTaskForm.jsx";
-import {Container, Row, Col} from "react-bootstrap";
+import {Container, Row, Col, Modal} from "react-bootstrap";
 
 const Board = () => {
 
@@ -20,12 +20,6 @@ const Board = () => {
             console.error(error);
             alert("Failed to load columns");
         })
-        getTaskDetails().then(data => {
-            setTaskDetails(data);
-        }).catch(error => {
-            console.error(error);
-            alert("Failed to load task details");
-        })
 
     }, []);
 
@@ -38,9 +32,11 @@ const Board = () => {
 
     const [searchTerm, setSearchTerm] = useState("");
 
-    const [taskDetails, setTaskDetails] = useState([]);
-
     const [viewToggle, setViewToggle] = useState(false);
+
+    const [showTaskModal, setShowTaskModal] = useState(false);
+
+    const [theme, setTheme] = useState("green");
 
 
     const addTask = (taskData) => {
@@ -62,9 +58,8 @@ const Board = () => {
         }
         createTask(newTask).then(data => {
             setTasks(previousTasks => [...previousTasks, data]);
-            getTaskDetails().then(data => {
-                setTaskDetails(data);
-            })
+            handleCloseModal();
+
         }).catch(error => {
             console.error(error);
             alert("Failed to create task");
@@ -73,9 +68,6 @@ const Board = () => {
     const handleDeleteTask = (taskId) => {
         deleteTask(taskId).then(() => {
             setTasks(previousTasks => previousTasks.filter(task => task.id !== taskId));
-            getTaskDetails().then(data => {
-                setTaskDetails(data);
-            })
         }).catch(error => {
             console.error(error);
             alert("Failed to delete task");
@@ -84,6 +76,7 @@ const Board = () => {
     const handleUpdateTask = (taskId) => {
         const selectedTask = tasks.find(task => task.id === taskId);
         setEditingTask(selectedTask);
+        setShowTaskModal(true);
     }
 
     const handleSaveTask = (taskId, updatedTaskData) => {
@@ -102,10 +95,8 @@ const Board = () => {
             setTasks(previousTasks => previousTasks.map(task => task.id === taskId
                 ? data
                 : task))
-            setEditingTask(null);
-            getTaskDetails().then(data => {
-                setTaskDetails(data);
-            })
+            handleCloseModal();
+
         }).catch(error => {
             console.error(error);
             alert("Failed to update task");
@@ -113,84 +104,125 @@ const Board = () => {
     }
 
     const handleCancelEdit = () => {
-        setEditingTask(null);
+        handleCloseModal();
     }
 
     const filteredTasks = tasks.filter(task => task.title.toLowerCase().includes(searchTerm.toLowerCase()));
 
+    const handleCloseModal = () => {
+        setShowTaskModal(false);
+        setEditingTask(null);
+    }
+
 
     return (
-        <Container>
+        <div className="kanban-app" data-theme={theme}>
+            <Container>
+                <button className="accent-button"
+                        onClick={() => {
+                            setEditingTask(null);
+                            setShowTaskModal(true);
+                        }}>
+                    New Task
+                </button>
+                <Modal
+                    show={showTaskModal}
+                    onHide={handleCloseModal}
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title>{editingTask ? "Edit Task" : "Create New Task"}</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        {editingTask ? (
+                            <EditTaskForm
+                                task={editingTask}
+                                onSaveTask={handleSaveTask}
+                                onCancel={handleCancelEdit}
+                            />) : (<TaskForm onAddTask={addTask}></TaskForm>)}
+                    </Modal.Body>
+                </Modal>
 
-            <h1>My Kanban Board</h1>
-            <label
-                htmlFor="taskSearch"
-            ></label>
+                <h1>My Kanban Board</h1>
+                <label
+                    htmlFor="taskSearch"
+                ></label>
 
-            <input
-                id="taskSearch"
-                type="text"
-                placeholder="Search Tasks"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <button onClick={() => setViewToggle(!viewToggle)}>
-                {viewToggle ? "Show Board" : "Show All Tasks"}
-            </button>
-            <Row
-                className="g-3"
-            >
-                <Col xs={12} md={4}>
-                    <Column
-                        title={"To Do"}
-                        tasks={filteredTasks.filter(task => task.column?.name === "To Do")}
-                        onDeleteTask={handleDeleteTask}
-                        onUpdateTask={handleUpdateTask}
-                    />
-                </Col>
-                <Col xs={12} md={4}>
-                    <Column
-                        title={"In Progress"}
-                        tasks={filteredTasks.filter(task => task.column?.name === "In Progress")}
-                        onDeleteTask={handleDeleteTask}
-                        onUpdateTask={handleUpdateTask}
-                    />
-                </Col>
+                <input
+                    id="taskSearch"
+                    type="text"
+                    placeholder="Search Tasks"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <button onClick={() => setViewToggle(!viewToggle)}>
+                    {viewToggle ? "Show Board" : "Show All Tasks"}
+                </button>
+                <button onClick={() => setTheme("green")}>
+                    Green
+                </button>
+                <button onClick={() => setTheme("orange")}>
+                    Orange
+                </button>
+                <button onClick={() => setTheme("blue")}>
+                    Blue
+                </button>
+                <p>Current theme: {theme}</p>
+                {!viewToggle && (
+                    <Row
+                        className="g-3"
+                    >
+                        <Col xs={12} md={4}>
+                            <Column
+                                title={"To Do"}
+                                tasks={filteredTasks.filter(task => task.column?.name === "To Do")}
+                                onDeleteTask={handleDeleteTask}
+                                onUpdateTask={handleUpdateTask}
+                            />
+                        </Col>
+                        <Col xs={12} md={4}>
+                            <Column
+                                title={"In Progress"}
+                                tasks={filteredTasks.filter(task => task.column?.name === "In Progress")}
+                                onDeleteTask={handleDeleteTask}
+                                onUpdateTask={handleUpdateTask}
+                            />
+                        </Col>
 
-                <Col xs={12} md={4}>
-                    <Column
-                        title={"Done"}
-                        tasks={filteredTasks.filter(task => task.column?.name === "Done")}
-                        onDeleteTask={handleDeleteTask}
-                        onUpdateTask={handleUpdateTask}
-                    />
-                </Col>
+                        <Col xs={12} md={4}>
+                            <Column
+                                title={"Done"}
+                                tasks={filteredTasks.filter(task => task.column?.name === "Done")}
+                                onDeleteTask={handleDeleteTask}
+                                onUpdateTask={handleUpdateTask}
+                            />
+                        </Col>
 
-            </Row>
-            <table className="task-table">
-                <thead>
-                <tr>
-                    <th>Task Title</th>
-                    <th>Column</th>
-                    <th>Board</th>
-                </tr>
-                </thead>
-                <tbody>
-                {taskDetails.map((taskDetail) => (
-                    <tr key={taskDetail.id}>
-                        <td>{taskDetail.title}</td>
-                        <td>{taskDetail.columnName}</td>
-                        <td>{taskDetail.boardName}</td>
-                    </tr>
+                    </Row>
+                )}
+                {viewToggle && (
+                    <table className="task-table">
+                        <thead>
+                        <tr>
+                            <th>Task Title</th>
+                            <th>Column</th>
+                            <th>Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {filteredTasks.map((task) => (
+                            <tr key={task.id}>
+                                <td>{task.title}</td>
+                                <td>{task.column?.name}</td>
+                                <td>{task.description}</td>
+                            </tr>
 
-                ))}
-                </tbody>
-            </table>
-            <br/>
-            <TaskForm onAddTask={addTask}/>
-            {editingTask && <EditTaskForm task={editingTask} onSaveTask={handleSaveTask} onCancel={handleCancelEdit}/>}
-        </Container>
-
+                        ))}
+                        </tbody>
+                    </table>
+                )}
+                <br/>
+            </Container>
+        </div>
     )
 }
 
