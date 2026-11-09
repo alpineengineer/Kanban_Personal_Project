@@ -7,7 +7,7 @@ const Column = ({title, tasks, onDeleteTask, onUpdateTask}) => {
 
     return (
         <Card
-        className="bg-light h-100"
+        className="kanban-column h-100"
         >
             <Card.Body>
                 <Card.Title className="mb-3">{title}</Card.Title>
@@ -19,6 +19,7 @@ const Column = ({title, tasks, onDeleteTask, onUpdateTask}) => {
                         onDeleteTask={onDeleteTask}
                         onUpdateTask={onUpdateTask}
                         id={task.id}
+                        priority={task.priority}
                     />)
                 )}
             </Card.Body>
