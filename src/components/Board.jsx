@@ -38,7 +38,9 @@ const Board = () => {
 
     const [searchTerm, setSearchTerm] = useState("");
 
-    const [taskDetails, setTaskDetails] = useState([])
+    const [taskDetails, setTaskDetails] = useState([]);
+
+    const [viewToggle, setViewToggle] = useState(false);
 
 
     const addTask = (taskData) => {
@@ -124,6 +126,7 @@ const Board = () => {
             <label
                 htmlFor="taskSearch"
             ></label>
+
             <input
                 id="taskSearch"
                 type="text"
@@ -131,6 +134,9 @@ const Board = () => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
+            <button onClick={() => setViewToggle(!viewToggle)}>
+                {viewToggle ? "Show Board" : "Show All Tasks"}
+            </button>
             <Row
                 className="g-3"
             >
@@ -161,7 +167,7 @@ const Board = () => {
                 </Col>
 
             </Row>
-            <table>
+            <table className="task-table">
                 <thead>
                 <tr>
                     <th>Task Title</th>
