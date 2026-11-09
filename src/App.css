@@ -1,225 +1,382 @@
-.counter {
-    font-size: 16px;
-    padding: 5px 10px;
-    border-radius: 5px;
-    color: var(--accent);
-    background: var(--accent-bg);
-    border: 2px solid transparent;
-    transition: border-color 0.3s;
-    margin-bottom: 24px;
 
-    &:hover {
-        border-color: var(--accent-border);
-    }
+/* =========================================
+   MOSSWIRE KANBAN
+   Green, Blue, and Orange themes
+   ========================================= */
 
-    &:focus-visible {
-        outline: 2px solid var(--accent);
-        outline-offset: 2px;
-    }
-}
+/* 1. THEME DEFINITIONS */
 
-.App {
+.kanban-app {
+    --background: #09110d;
+    --surface: #0f1d16;
+    --surface-raised: #15271d;
+    --accent: #98c6a8;
+    --accent-hover: #77ad8b;
+
+    --text-primary: #edf2f0;
+    --text-secondary: #aab8b5;
+    --border-color: #30483a;
+
+    background-color: var(--background);
+    color: var(--text-primary);
     min-height: 100vh;
-    background-color: var(--bs-body-bg);
-    color: var(--bs-body-color);
-    transition: background-color 0.3s ease, color 0.3s ease;
+    padding: 24px 0 48px;
 }
+
+.kanban-app[data-theme="blue"] {
+    --background: #091017;
+    --surface: #0e1a24;
+    --surface-raised: #132633;
+    --accent: #69c9ff;
+    --accent-hover: #48a9e0;
+    --border-color: #294657;
+}
+
+.kanban-app[data-theme="orange"] {
+    --background: #130d08;
+    --surface: #20150c;
+    --surface-raised: #302013;
+    --accent: #f3a344;
+    --accent-hover: #d88929;
+    --border-color: #5a3d25;
+}
+
+/* 2. PAGE TYPOGRAPHY */
+
+.kanban-app h1,
+.kanban-app h2,
+.kanban-app h3,
+.kanban-app h4,
+.kanban-app h5,
+.kanban-app h6 {
+    color: var(--text-primary);
+}
+
+.kanban-app h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 24px 0;
+}
+
+.kanban-app p {
+    color: var(--text-secondary);
+}
+
+/* 3. KANBAN COLUMNS */
 
 .kanban-column {
-    border: 1px solid var(--bs-border-color);
+    background-color: var(--surface);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
     border-radius: 14px;
-    background-color: var(--bs-tertiary-bg);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    transition: background-color 0.3s ease;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
+.kanban-column-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--accent) !important;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.task-count {
+    background-color: var(--surface-raised);
+    color: var(--accent);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    border: 1px solid var(--border-color);
+}
+
+/* 4. TASK CARDS */
+
 .kanban-task {
-    background-color: var(--bs-body-bg);
-    border: 1px solid var(--bs-border-color);
+    background-color: var(--surface-raised);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
     border-radius: 10px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .kanban-task:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+    border-color: var(--accent);
 }
 
-.mosswire-navbar {
-    background-color: var(--bs-tertiary-bg);
-    border-color: var(--bs-border-color) !important;
-    padding: 1rem 0;
+.kanban-task .card-title {
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-weight: 600;
 }
 
-.mosswire-navbar .navbar-brand {
-    font-weight: 700;
-    letter-spacing: 0.5px;
+.kanban-task .card-text {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-top: 12px;
+    overflow-wrap: anywhere;
 }
 
-.hero {
-    position: relative;
+/* 5. BUTTONS */
 
-    .base,
-    .framework,
-    .vite {
-        inset-inline: 0;
-        margin: 0 auto;
-    }
-
-    .base {
-        width: 170px;
-        position: relative;
-        z-index: 0;
-    }
-
-    .framework,
-    .vite {
-        position: absolute;
-    }
-
-    .framework {
-        z-index: 1;
-        top: 34px;
-        height: 28px;
-        transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg) scale(1.4);
-    }
-
-    .vite {
-        z-index: 0;
-        top: 107px;
-        height: 26px;
-        width: auto;
-        transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg) scale(0.8);
-    }
-
+.accent-button,
+.kanban-app .btn-primary,
+.mosswire-modal .btn-primary {
+    background-color: var(--accent);
+    color: #101820;
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 9px 16px;
+    font-weight: 600;
 }
 
-#center {
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-    place-content: center;
-    place-items: center;
-    flex-grow: 1;
-
-    @media (max-width: 1024px) {
-        padding: 32px 20px 24px;
-        gap: 18px;
-    }
+.accent-button:hover,
+.kanban-app .btn-primary:hover,
+.mosswire-modal .btn-primary:hover {
+    background-color: var(--accent-hover);
+    border-color: var(--accent-hover);
+    color: #101820;
 }
 
-#next-steps {
-    display: flex;
-    border-top: 1px solid var(--border);
-    text-align: left;
-
-    & > div {
-        flex: 1 1 0;
-        padding: 32px;
-        @media (max-width: 1024px) {
-            padding: 24px 20px;
-        }
-    }
-
-    .icon {
-        margin-bottom: 16px;
-        width: 22px;
-        height: 22px;
-    }
-
-    @media (max-width: 1024px) {
-        flex-direction: column;
-        text-align: center;
-    }
+.kanban-app button:not(.accent-button):not(.btn),
+.mosswire-modal button:not(.btn):not(.btn-close) {
+    background-color: var(--surface-raised);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 9px 14px;
 }
 
-#docs {
-    border-right: 1px solid var(--border);
-
-    @media (max-width: 1024px) {
-        border-right: none;
-        border-bottom: 1px solid var(--border);
-    }
+.kanban-app button:not(.accent-button):not(.btn):hover {
+    border-color: var(--accent);
+    color: var(--accent);
 }
 
-#next-steps ul {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    gap: 8px;
-    margin: 32px 0 0;
+/* Keep Delete visually distinct */
 
-    .logo {
-        height: 18px;
-    }
-
-    a {
-        color: var(--text-h);
-        font-size: 16px;
-        border-radius: 6px;
-        background: var(--social-bg);
-        display: flex;
-        padding: 6px 12px;
-        align-items: center;
-        gap: 8px;
-        text-decoration: none;
-        transition: box-shadow 0.3s;
-
-        &:hover {
-            box-shadow: var(--shadow);
-        }
-
-        .button-icon {
-            height: 18px;
-            width: 18px;
-        }
-    }
-
-    @media (max-width: 1024px) {
-        margin-top: 20px;
-        flex-wrap: wrap;
-        justify-content: center;
-
-        li {
-            flex: 1 1 calc(50% - 8px);
-        }
-
-        a {
-            width: 100%;
-            justify-content: center;
-            box-sizing: border-box;
-        }
-    }
+.kanban-app .btn-outline-danger,
+.mosswire-modal .btn-outline-danger {
+    background: transparent;
+    color: #f08b8b;
+    border-color: #a45656;
 }
 
-#spacer {
-    height: 88px;
-    border-top: 1px solid var(--border);
-    @media (max-width: 1024px) {
-        height: 48px;
-    }
+.kanban-app .btn-outline-danger:hover,
+.mosswire-modal .btn-outline-danger:hover {
+    background-color: #8d3535;
+    color: white;
 }
 
-.ticks {
-    position: relative;
+/* 6. SEARCH AND FORM INPUTS */
+
+.kanban-app input,
+.kanban-app select,
+.kanban-app textarea {
+    background-color: var(--surface-raised);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px 12px;
+}
+
+.kanban-app input::placeholder,
+.mosswire-modal input::placeholder,
+.mosswire-modal textarea::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.85;
+}
+
+.kanban-app input:focus,
+.kanban-app select:focus,
+.kanban-app textarea:focus {
+    background-color: var(--surface-raised);
+    color: var(--text-primary);
+    border-color: var(--accent);
+    outline: none;
+    box-shadow: 0 0 0 2px var(--border-color);
+}
+
+/* 7. ALL TASKS TABLE */
+
+.task-table {
     width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: var(--surface);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 20px;
+}
 
-    &::before,
-    &::after {
-        content: '';
-        position: absolute;
-        top: -4.5px;
-        border: 5px solid transparent;
+.task-table th {
+    background-color: var(--surface-raised);
+    color: var(--accent);
+    padding: 14px 16px;
+    text-align: left;
+}
+
+.task-table td {
+    background-color: transparent;
+    color: var(--text-primary);
+    padding: 14px 16px;
+    border-top: 1px solid var(--border-color);
+    overflow-wrap: anywhere;
+}
+
+.task-table tbody tr:hover {
+    background-color: var(--surface-raised);
+}
+
+/* 8. MODAL THEME VARIABLES */
+
+.mosswire-modal {
+    --surface: #0f1d16;
+    --surface-raised: #15271d;
+    --accent: #98c6a8;
+    --accent-hover: #77ad8b;
+    --text-primary: #edf2f0;
+    --text-secondary: #aab8b5;
+    --border-color: #30483a;
+    color-scheme: dark;
+}
+
+.mosswire-modal.theme-blue {
+    --surface: #0e1a24;
+    --surface-raised: #132633;
+    --accent: #69c9ff;
+    --accent-hover: #48a9e0;
+    --border-color: #294657;
+}
+
+.mosswire-modal.theme-orange {
+    --surface: #20150c;
+    --surface-raised: #302013;
+    --accent: #f3a344;
+    --accent-hover: #d88929;
+    --border-color: #5a3d25;
+}
+
+/* 9. MODAL CONTENT */
+
+.mosswire-modal .modal-content {
+    background-color: var(--surface);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+}
+
+.mosswire-modal .modal-header,
+.mosswire-modal .modal-footer {
+    border-color: var(--border-color);
+}
+
+.mosswire-modal .modal-title {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.mosswire-modal .btn-close {
+    filter: invert(1) grayscale(1);
+    opacity: 0.8;
+}
+
+.mosswire-modal label,
+.mosswire-modal p {
+    color: var(--text-primary);
+}
+
+/* 10. MODAL FORM CONTROLS */
+
+.mosswire-modal .form-control,
+.mosswire-modal .form-select,
+.mosswire-modal input,
+.mosswire-modal select,
+.mosswire-modal textarea {
+    background-color: var(--surface-raised);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color-scheme: dark;
+}
+
+.mosswire-modal .form-control:focus,
+.mosswire-modal .form-select:focus,
+.mosswire-modal input:focus,
+.mosswire-modal select:focus,
+.mosswire-modal textarea:focus {
+    background-color: var(--surface-raised);
+    color: var(--text-primary);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--border-color);
+    outline: none;
+}
+
+.mosswire-modal option {
+    background-color: var(--surface-raised);
+    color: var(--text-primary);
+}
+
+/* 11. RESPONSIVE LAYOUT */
+
+@media (max-width: 768px) {
+    .kanban-app {
+        padding: 16px 0 32px;
     }
 
-    &::before {
-        left: 0;
-        border-left-color: var(--border);
+    .kanban-app h1 {
+        font-size: 1.6rem;
     }
 
-    &::after {
-        right: 0;
-        border-right-color: var(--border);
+    .task-table th,
+    .task-table td {
+        padding: 10px 8px;
+        font-size: 0.85rem;
     }
+}
+/* Fix nested Bootstrap cards inside modals */
 
+.mosswire-modal .card,
+.mosswire-modal .card-body {
+    background-color: var(--surface);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+.mosswire-modal .card-title,
+.mosswire-modal .form-label {
+    color: var(--text-primary);
+}
+
+.mosswire-modal .btn-secondary {
+    background-color: var(--surface-raised);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+/* Mosswire navigation */
+
+.kanban-app .mosswire-navbar {
+    background-color: var(--surface);
+    border-color: var(--border-color) !important;
+}
+
+.kanban-app .mosswire-navbar .navbar-brand {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.kanban-app .mosswire-navbar button {
+    background-color: var(--surface-raised);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 6px 12px;
+}
+
+.kanban-app .mosswire-navbar button:hover {
+    border-color: var(--accent);
+    color: var(--accent);
 }

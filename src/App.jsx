@@ -1,27 +1,28 @@
-import './App.css'
+
+import './App.css';
 import Board from "./components/Board.jsx";
 import {useState} from "react";
-import {Button, Navbar, Container} from "react-bootstrap";
+import {Navbar, Container} from "react-bootstrap";
 
 function App() {
+    const [theme, setTheme] = useState("green");
 
-    const [theme, setTheme] = useState("light");
-    const toggleTheme = () => {
-        setTheme(theme === "light" ? "dark" : "light");
-    }
     return (
-        <div className="App"
-             data-bs-theme={theme}>
+        <div className="kanban-app" data-theme={theme}>
             <Navbar className="mosswire-navbar border-bottom mb-4">
                 <Container className="d-flex justify-content-between align-items-center">
                     <Navbar.Brand>Mosswire Kanban</Navbar.Brand>
-                    <Button onClick={toggleTheme} variant="outline-success" size="sm">
-                        {theme === "light" ? "Dark Mode" : "Light Mode"}</Button>
+                    <div className="d-flex gap-2">
+                        <button onClick={() => setTheme("green")}>Green</button>
+                        <button onClick={() => setTheme("blue")}>Blue</button>
+                        <button onClick={() => setTheme("orange")}>Orange</button>
+                    </div>
                 </Container>
             </Navbar>
-            <Board/>
+
+            <Board theme={theme}/>
         </div>
-    )
+    );
 }
 
-export default App
+export default App;
