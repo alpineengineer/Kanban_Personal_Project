@@ -13,7 +13,10 @@ import org.springframework.web.server.ResponseStatusException;
 import java.net.URL;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {
+        "http://localhost:5173",
+        "https://kanban.mosswire.dev"
+})
 @RestController
 @RequestMapping("/api/tasks")
 
