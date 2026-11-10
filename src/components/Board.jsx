@@ -37,9 +37,6 @@ const Board = ({theme}) => {
     }, []);
 
 
-
-
-
     const addTask = (taskData) => {
         const selectedColumn =
             columns.find(column => column.name === taskData.status);
@@ -205,7 +202,15 @@ const Board = ({theme}) => {
                     <tbody>
                     {filteredTasks.map((task) => (
                         <tr key={task.id}>
-                            <td>{task.title}</td>
+                            <td>
+                                <button
+                                    type="button"
+                                    className="btn btn-link p-0 text-start task-title-link"
+                                    onClick={() => handleUpdateTask(task.id)}
+                                >
+                                    {task.title}
+                                </button>
+                            </td>
                             <td>{task.column?.name}</td>
                             <td>{task.description}</td>
                         </tr>

@@ -590,3 +590,21 @@ body.fox-cursor-active * {
         width: 100%;
     }
 }
+/* Clickable titles in All Tasks view */
+
+.kanban-app .task-title-link {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.kanban-app .task-title-link:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+
+.kanban-app .task-title-link:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 3px;
+}
