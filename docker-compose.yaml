@@ -31,6 +31,23 @@ services:
       - "8080"
     restart: unless-stopped
 
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: kanban-frontend
+    depends_on:
+      - backend
+    expose:
+      - "80"
+    restart: unless-stopped
+    networks:
+      - default
+      - mosswire-auth
+
 volumes:
   kanban_data:
 
+networks:
+  mosswire-auth:
+    external: true
