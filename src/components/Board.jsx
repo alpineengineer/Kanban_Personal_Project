@@ -7,6 +7,19 @@ import {Container, Row, Col, Modal} from "react-bootstrap";
 
 const Board = ({theme}) => {
 
+
+    const [columns, setColumns] = useState([]);
+
+    const [editingTask, setEditingTask] = useState(null);
+
+    const [tasks, setTasks] = useState([])
+
+    const [searchTerm, setSearchTerm] = useState("");
+
+    const [viewToggle, setViewToggle] = useState(false);
+
+    const [showTaskModal, setShowTaskModal] = useState(false);
+
     useEffect(() => {
         getTasks().then(data => {
             setTasks(data);
@@ -24,17 +37,7 @@ const Board = ({theme}) => {
     }, []);
 
 
-    const [columns, setColumns] = useState([]);
 
-    const [editingTask, setEditingTask] = useState(null);
-
-    const [tasks, setTasks] = useState([])
-
-    const [searchTerm, setSearchTerm] = useState("");
-
-    const [viewToggle, setViewToggle] = useState(false);
-
-    const [showTaskModal, setShowTaskModal] = useState(false);
 
 
     const addTask = (taskData) => {
@@ -146,18 +149,18 @@ const Board = ({theme}) => {
             <label
                 htmlFor="taskSearch"
             ></label>
-
-            <input
-                id="taskSearch"
-                type="text"
-                placeholder="Search Tasks"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <button onClick={() => setViewToggle(!viewToggle)}>
-                {viewToggle ? "Show Board" : "Show All Tasks"}
-            </button>
-
+            <div className="board-controls">
+                <input
+                    id="taskSearch"
+                    type="text"
+                    placeholder="Search Tasks"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <button onClick={() => setViewToggle(!viewToggle)}>
+                    {viewToggle ? "Show Board" : "Show All Tasks"}
+                </button>
+            </div>
             {!viewToggle && (
                 <Row
                     className="g-3"

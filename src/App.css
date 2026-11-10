@@ -1,4 +1,3 @@
-
 /* =========================================
    MOSSWIRE KANBAN
    Green, Blue, and Orange themes
@@ -337,6 +336,7 @@
         font-size: 0.85rem;
     }
 }
+
 /* Fix nested Bootstrap cards inside modals */
 
 .mosswire-modal .card,
@@ -356,6 +356,7 @@
     color: var(--text-primary);
     border-color: var(--border-color);
 }
+
 /* Mosswire navigation */
 
 .kanban-app .mosswire-navbar {
@@ -379,4 +380,213 @@
 .kanban-app .mosswire-navbar button:hover {
     border-color: var(--accent);
     color: var(--accent);
+}
+
+.architecture-section {
+    max-width: 650px;
+    margin: 2rem auto;
+    text-align: center;
+}
+
+.architecture-diagram {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+.architecture-box {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid var(--border-color, #34505a);
+    border-radius: 10px;
+    background: var(--surface-raised);
+    color: var(--text-primary);
+}
+
+.architecture-box p {
+    margin: 0.5rem 0 0;
+}
+
+.architecture-arrow {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.about-page {
+    max-width: 950px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.faq-section {
+    margin-top: 3rem;
+}
+
+.faq-section h3 {
+    margin-top: 1.5rem;
+    font-size: 1.3rem;
+}
+
+.faq-section p {
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+}
+
+.fox-easter-egg {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 3rem;
+}
+
+.fox-trigger {
+    background: transparent;
+    border: none;
+    padding: 0.5rem;
+    font-size: 0.85rem;
+    opacity: 0.25;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.fox-trigger:hover,
+.fox-trigger:focus-visible {
+    opacity: 1;
+}
+
+.fox-trigger:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+}
+
+body.fox-cursor-active,
+body.fox-cursor-active * {
+    cursor: none !important;
+}
+
+.fox-cursor {
+    position: fixed;
+    transform: translate(-50%, -50%);
+    font-size: 28px;
+    pointer-events: none;
+    z-index: 9999;
+    user-select: none;
+}
+
+.fox-particle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    font-size: 14px;
+    user-select: none;
+    animation: fox-fall 900ms ease-out forwards;
+}
+
+@keyframes fox-fall {
+    0% {
+        opacity: 1;
+        transform: translate(0, 0) rotate(0deg) scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(var(--drift), 65px) rotate(120deg) scale(0.3);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fox-particle {
+        animation: none;
+        display: none;
+    }
+}
+.fox-cursor-image {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    image-rendering: pixelated;
+    pointer-events: none;
+}
+
+/* =========================================
+   ABOUT PAGE — FAQ ACCORDION
+   ========================================= */
+
+.kanban-app .faq-section .accordion {
+    --bs-accordion-bg: var(--surface);
+    --bs-accordion-color: var(--text-primary);
+    --bs-accordion-border-color: var(--border-color);
+    --bs-accordion-btn-bg: var(--surface-raised);
+    --bs-accordion-btn-color: var(--text-primary);
+    --bs-accordion-active-bg: var(--surface-raised);
+    --bs-accordion-active-color: var(--accent);
+    --bs-accordion-btn-focus-box-shadow: none;
+    --bs-accordion-border-radius: 10px;
+    --bs-accordion-inner-border-radius: 10px;
+}
+
+.kanban-app .faq-section .accordion-button {
+    font-weight: 600;
+}
+
+.kanban-app .faq-section .accordion-button:not(.collapsed) {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.kanban-app .faq-section .accordion-button::after {
+    filter: grayscale(1) brightness(2);
+}
+
+.kanban-app .faq-section .accordion-body {
+    background-color: var(--surface);
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+/* Compact fox Easter egg button */
+
+.kanban-app button.fox-trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    padding: 3px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background: transparent;
+    opacity: 0.3;
+    font-size: 16px;
+    line-height: 1;
+}
+
+.kanban-app button.fox-trigger:hover,
+.kanban-app button.fox-trigger:focus-visible {
+    opacity: 1;
+    border-color: var(--border-color);
+}
+/* Board search controls */
+
+.kanban-app .board-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin: 24px auto;
+}
+
+.kanban-app .board-controls input {
+    width: 280px;
+    max-width: 100%;
+}
+
+@media (max-width: 480px) {
+    .kanban-app .board-controls {
+        flex-direction: column;
+    }
+
+    .kanban-app .board-controls input {
+        width: 100%;
+    }
 }
